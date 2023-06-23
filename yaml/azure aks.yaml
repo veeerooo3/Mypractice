@@ -1,0 +1,59 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: azureSubscription  # Azure Service Connection credentials
+    value: 'YourAzureSubscription'
+  - name: resourceGroup
+    value: 'YourResourceGroup'
+  - name: kubernetesCluster
+    value: 'YourAKSCluster'
+  - name: appName
+    value: 'YourAppName'
+  - name: imageRepository
+    value: 'yourregistry.azurecr.io/yourimage'
+  - name: imageTag
+    value: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: 'Build stage'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build job'
+    steps:
+    - script: |
+        # Build your application
+        # Example: For a Dockerized application
+        docker build -t $(imageRepository):$(imageTag) .
+        docker push $(imageRepository):$(imageTag)
+      displayName: 'Build and push Docker image'
+
+- stage: Deploy
+  displayName: 'Deploy stage'
+  dependsOn: Build
+  jobs:
+  - job: DeployJob
+    displayName: 'Deploy job'
+    steps:
+    - task: AzureCLI@2
+      displayName: 'Azure Login'
+      inputs:
+        azureSubscription: $(azureSubscription)
+
+    - script: |
+        # Install and configure kubectl
+        az aks install-cli
+
+        # Configure kubectl to connect to AKS cluster
+        az aks get-credentials --resource-group $(resourceGroup) --name $(kubernetesCluster)
+
+        # Deploy the application using Kubernetes manifest files
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+      displayName: 'Deploy application to AKS'
