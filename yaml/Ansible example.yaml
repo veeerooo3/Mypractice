@@ -1,0 +1,23 @@
+---
+- name: Example Playbook
+  hosts: web_servers
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: present
+      notify: restart apache
+
+    - name: Copy Apache config file
+      copy:
+        src: files/httpd.conf
+        dest: /etc/httpd/conf/httpd.conf
+        mode: 0644
+      notify: restart apache
+
+  handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
+---
