@@ -1,4 +1,4 @@
 
 
 #this the example for hybridmodel please go below model
-![Preview](.Mynotes/pics/mypic2023-07/vlc_HG98zHdyKE.png)
+![Preview](.~/mypic2023-07/vlc_HG98zHdyKE.png)
