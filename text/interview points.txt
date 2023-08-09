@@ -3,5 +3,7 @@ added onemore concept call AWS
 
 
 
+(preview . ~ /pics/sample1.png)
 
 
+![preview](./pics/sample1.png)
