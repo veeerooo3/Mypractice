@@ -25,8 +25,11 @@ metadata:
 spec:
   selector:
     app: nginx
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
   type: NodePort # Change this to NodePort, ClusterIP, or ExternalName as needed
+  ports:
+  - protocol: TCP
+    port: 80
+    nodePort: 30248
+
+
+
