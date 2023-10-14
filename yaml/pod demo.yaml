@@ -1,33 +1,10 @@
 apiVersion: v1
-kind: Service
+kind: Pod
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"nginx-service","namespace":"default"},"spec":{"ports":[{"nodePort":30248,"port":80,"protocol":"TCP"}],"selector":{"app":"nginx"},"type":"NodePort"}}
-  creationTimestamp: "2023-09-16T09:40:33Z"
-  name: nginx-service
-  namespace: default
-  resourceVersion: "10902"
-  uid: 64cf56d8-d267-474d-8531-0908cb116e36
+  name: pod1
+  labels:
+    tier: frontend
 spec:
-  clusterIP: 10.98.76.166
-  clusterIPs:
-  - 10.98.76.166
-  externalTrafficPolicy: Cluster
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-  - IPv4
-  ipFamilyPolicy: SingleStack
-  ports:
-  - nodePort:
-    port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: nginx
-  sessionAffinity: None
-  type: NodePort
-status:
-  loadBalancer:
-    ingress:
-    - hostname: localhost
+  containers:
+  - name: hello1
+    image: gcr.io/google-samples/hello-app:2.0
